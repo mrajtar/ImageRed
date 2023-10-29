@@ -1,3 +1,5 @@
+using ImageRed.Application.Interfaces;
+using ImageRed.Application.Services;
 using ImageRed.Domain.Interfaces;
 using ImageRed.Infrastructure.Data;
 using ImageRed.Infrastructure.Repositories;
@@ -15,6 +17,8 @@ builder.Services.AddDbContext<ImageRedDbContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
 builder.Services.AddScoped<IPictureRepository, PictureRepository>();
+builder.Services.AddScoped<IPictureService, PictureService>();
+builder.Services.AddTransient<IFileService, FileService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,7 +27,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

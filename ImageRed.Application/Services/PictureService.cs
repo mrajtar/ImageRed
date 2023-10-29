@@ -1,6 +1,8 @@
 ﻿using ImageRed.Application.Dto;
+using ImageRed.Application.Interfaces;
 using ImageRed.Domain.Entities;
 using ImageRed.Domain.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ImageRed.Application.Services
 {
-    public class PictureService
+    public class PictureService : IPictureService
     {
         private readonly IPictureRepository _pictureRepository;
 
@@ -51,7 +53,7 @@ namespace ImageRed.Application.Services
             return MapPictureToPictureDto(addedPicture);
         }
 
-        public async Task UpdatePictureAsync(PictureDto pictureDto)
+        public async Task UpdatePictureAsync(int id, PictureDto pictureDto)
         {
             var picture = MapPictureDtoToPicture(pictureDto);
             await _pictureRepository.UpdateAsync(picture);
