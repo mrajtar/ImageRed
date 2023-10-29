@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ImageRed.Application\ImageRed.Application.csproj" />
+    <ProjectReference Include="..\ImageRed.Infrastructure\ImageRed.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
