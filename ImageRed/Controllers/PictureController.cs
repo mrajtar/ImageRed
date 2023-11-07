@@ -7,9 +7,11 @@ using System.IO;
 using System.Threading.Tasks;
 using ImageRed.Application.Interfaces;
 using ImageRed.Application.Dto;
+using Microsoft.AspNetCore.Authorization;
 
 [Route("api/pictures")]
 [ApiController]
+
 public class PictureController : ControllerBase
 {
     private readonly IPictureService _pictureService;
