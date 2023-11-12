@@ -49,6 +49,7 @@ public class PictureController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Authorize]
     public async Task<IActionResult> AddPicture([FromForm] PictureDto pictureDto)
     {
         if (pictureDto.ImageFile == null || pictureDto.ImageFile.Length == 0)
@@ -75,6 +76,7 @@ public class PictureController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
     public async Task<IActionResult> UpdatePicture(int id, [FromBody] PictureDto pictureDto)
     {
         if (id != pictureDto.Id)
@@ -96,6 +98,7 @@ public class PictureController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
     public async Task<IActionResult> DeletePicture(int id)
     {
         var existingPicture = await _pictureService.GetPictureAsync(id);
