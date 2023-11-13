@@ -1,5 +1,6 @@
 ﻿using ImageRed.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -25,6 +26,7 @@ namespace ImageRed.Infrastructure.Repositories
             // Create claims
             var claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            claims.Add(new Claim("UserId", user.Id.ToString()));
 
             foreach (var role in roles)
             {

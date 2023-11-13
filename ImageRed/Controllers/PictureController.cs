@@ -52,6 +52,7 @@ public class PictureController : ControllerBase
     [Authorize]
     public async Task<IActionResult> AddPicture([FromForm] PictureDto pictureDto)
     {
+        var userId = User.FindFirst("UserId").Value;
         if (pictureDto.ImageFile == null || pictureDto.ImageFile.Length == 0)
         {
             return BadRequest("No file is selected.");
@@ -67,7 +68,7 @@ public class PictureController : ControllerBase
  
         pictureDto.ImageUrl = result.Item2;
 
-        var addedPicture = await _pictureService.AddPictureAsync(pictureDto);
+        var addedPicture = await _pictureService.AddPictureAsync(pictureDto, userId);
 
         return CreatedAtAction(nameof(GetPicture), new { id = addedPicture.Id }, addedPicture);
     }
@@ -79,18 +80,13 @@ public class PictureController : ControllerBase
     [Authorize]
     public async Task<IActionResult> UpdatePicture(int id, [FromBody] PictureDto pictureDto)
     {
+        var userId = User.FindFirst("UserId").Value;
         if (id != pictureDto.Id)
         {
             return BadRequest("ID in the request body does not match the route.");
         }
 
-        var existingPicture = await _pictureService.GetPictureAsync(id);
-        if (existingPicture == null)
-        {
-            return NotFound();
-        }
-
-        await _pictureService.UpdatePictureAsync(id, pictureDto);
+        await _pictureService.UpdatePictureAsync(id, pictureDto, userId);
         return NoContent();
     }
 
@@ -101,6 +97,7 @@ public class PictureController : ControllerBase
     [Authorize]
     public async Task<IActionResult> DeletePicture(int id)
     {
+        var userId = User.FindFirst("UserId").Value;
         var existingPicture = await _pictureService.GetPictureAsync(id);
         if (existingPicture == null)
         {
@@ -110,7 +107,7 @@ public class PictureController : ControllerBase
 
         if (_fileService.DeleteImage(existingPicture.ImageUrl))
         {
-            await _pictureService.DeletePictureAsync(id);
+            await _pictureService.DeletePictureAsync(id, userId);
             return NoContent();
         }
 

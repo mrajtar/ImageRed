@@ -26,23 +26,30 @@ namespace ImageRed.Infrastructure.Repositories
             return await _context.Pictures.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<Picture> AddAsync(Picture picture)
+        public async Task<Picture> AddAsync(Picture picture, string UserId)
         {
+            picture.UserId = UserId;
             await _context.Pictures.AddAsync(picture);
             await _context.SaveChangesAsync();
             return picture;
         }
 
-        public async Task UpdateAsync(Picture picture)
+        public async Task UpdateAsync(Picture picture, string UserId)
         {
-            _context.Pictures.Update(picture);
-            await _context.SaveChangesAsync();
+            if (UserId == picture.UserId)
+            {
+                _context.Pictures.Update(picture);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task DeleteAsync(Picture picture)
+        public async Task DeleteAsync(Picture picture, string UserId)
         {
-            _context.Pictures.Remove(picture);
-            await _context.SaveChangesAsync();
+            if (UserId == picture.UserId)
+            {
+                _context.Pictures.Remove(picture);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

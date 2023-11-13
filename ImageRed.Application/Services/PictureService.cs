@@ -3,6 +3,7 @@ using ImageRed.Application.Interfaces;
 using ImageRed.Domain.Entities;
 using ImageRed.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,25 +47,51 @@ namespace ImageRed.Application.Services
             return pictureDto;
         }
 
-        public async Task<PictureDto> AddPictureAsync(PictureDto pictureDto)
+        public async Task<PictureDto> AddPictureAsync(PictureDto pictureDto, string UserId)
         {
+
             var picture = MapPictureDtoToPicture(pictureDto);
-            var addedPicture = await _pictureRepository.AddAsync(picture);
+            var addedPicture = await _pictureRepository.AddAsync(picture, UserId);
             return MapPictureToPictureDto(addedPicture);
         }
 
-        public async Task UpdatePictureAsync(int id, PictureDto pictureDto)
+        public async Task UpdatePictureAsync(int id, PictureDto pictureDto, string UserId)
         {
-            var picture = MapPictureDtoToPicture(pictureDto);
-            await _pictureRepository.UpdateAsync(picture);
+            var existingPicture = await _pictureRepository.GetByIdAsync(id);
+
+            if (existingPicture == null)
+            {
+                return;
+            }
+
+
+            if (UserId == existingPicture.UserId)
+            {
+                var picture = MapPictureDtoToPicture(pictureDto);
+                await _pictureRepository.UpdateAsync(picture, UserId);
+            }
+            else
+            {
+                throw new InvalidOperationException("User does not have permission to update the picture.");
+            }
         }
 
-        public async Task DeletePictureAsync(int id)
+        public async Task DeletePictureAsync(int id, string UserId)
         {
-            var picture = await _pictureRepository.GetByIdAsync(id);
-            if (picture != null)
+            var existingPicture = await _pictureRepository.GetByIdAsync(id);
+
+            if (existingPicture == null)
             {
-                await _pictureRepository.DeleteAsync(picture);
+                throw new InvalidOperationException("Picture not found");
+            }
+
+            if (UserId == existingPicture.UserId)
+            {
+                await _pictureRepository.DeleteAsync(existingPicture, UserId);
+            }
+            else
+            {
+                throw new InvalidOperationException("User does not have permission to delete the picture.");
             }
         }
 

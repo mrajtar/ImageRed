@@ -12,8 +12,8 @@ namespace ImageRed.Application.Interfaces
     {
         Task<IEnumerable<PictureDto>> GetAllPicturesAsync();
         Task<PictureDto> GetPictureAsync(int id);
-        Task<PictureDto> AddPictureAsync(PictureDto pictureDto);
-        Task UpdatePictureAsync(int id, PictureDto pictureDto);
-        Task DeletePictureAsync(int id);
+        Task<PictureDto> AddPictureAsync(PictureDto pictureDto, string UserId);
+        Task UpdatePictureAsync(int id, PictureDto pictureDto, string UserId);
+        Task DeletePictureAsync(int id, string UserId);
     }
 }
