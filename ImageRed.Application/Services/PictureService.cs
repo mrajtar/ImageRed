@@ -51,6 +51,7 @@ namespace ImageRed.Application.Services
         {
 
             var picture = MapPictureDtoToPicture(pictureDto);
+            picture.UserId = UserId;
             var addedPicture = await _pictureRepository.AddAsync(picture, UserId);
             return MapPictureToPictureDto(addedPicture);
         }
@@ -64,10 +65,9 @@ namespace ImageRed.Application.Services
                 return;
             }
 
-
             if (UserId == existingPicture.UserId)
             {
-                var picture = MapPictureDtoToPicture(pictureDto);
+                var picture = MapOldWithNew(pictureDto, existingPicture);
                 await _pictureRepository.UpdateAsync(picture, UserId);
             }
             else
@@ -75,6 +75,7 @@ namespace ImageRed.Application.Services
                 throw new InvalidOperationException("User does not have permission to update the picture.");
             }
         }
+
 
         public async Task DeletePictureAsync(int id, string UserId)
         {
@@ -117,6 +118,26 @@ namespace ImageRed.Application.Services
                 ImageUrl = pictureDto.ImageUrl,
                 Tag = pictureDto.Tag,
             };
+        }
+        private Picture MapOldWithNew(PictureDto pictureDto, Picture existingPic)
+        {
+            if (pictureDto.Title != null)
+            {
+                existingPic.Title = pictureDto.Title;
+            }
+
+
+            if (pictureDto.Description != null)
+            {
+                existingPic.Description = pictureDto.Description;
+            }
+
+            if (pictureDto.Tag != null)
+            {
+                existingPic.Tag = pictureDto.Tag;
+            }
+
+            return existingPic;
         }
     }
 }
