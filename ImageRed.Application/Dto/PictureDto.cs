@@ -15,7 +15,6 @@ namespace ImageRed.Application.Dto
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         public string? Tag { get; set; }
-        public string UserId { get; set; }
         [NotMapped]
         public IFormFile? ImageFile { get; set; }
     }

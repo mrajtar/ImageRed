@@ -63,6 +63,8 @@ builder.Services.AddScoped<IPictureService, PictureService>();
 builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddRoles<IdentityRole>()
     .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("ImageRed")

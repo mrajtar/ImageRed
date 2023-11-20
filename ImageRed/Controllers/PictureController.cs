@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using ImageRed.Application.Interfaces;
 using ImageRed.Application.Dto;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 [Route("api/pictures")]
 [ApiController]
@@ -17,12 +20,15 @@ public class PictureController : ControllerBase
     private readonly IPictureService _pictureService;
     private readonly IFileService _fileService;
     private readonly IPictureRepository _pictureRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public PictureController(IPictureService pictureService, IFileService fileService, IPictureRepository pictureRepository)
+
+    public PictureController(IPictureService pictureService, IFileService fileService, IPictureRepository pictureRepository, IHttpContextAccessor httpContextAccessor)
     {
         _pictureService = pictureService;
         _fileService = fileService;
         _pictureRepository = pictureRepository;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpGet]
@@ -52,7 +58,7 @@ public class PictureController : ControllerBase
     [Authorize]
     public async Task<IActionResult> AddPicture([FromForm] PictureDto pictureDto)
     {
-        var userId = User.FindFirst("UserId").Value;
+        var userId = _httpContextAccessor.HttpContext.User.FindFirst(i => i.Type == ClaimTypes.NameIdentifier).Value;
         if (pictureDto.ImageFile == null || pictureDto.ImageFile.Length == 0)
         {
             return BadRequest("No file is selected.");
@@ -80,10 +86,10 @@ public class PictureController : ControllerBase
     [Authorize]
     public async Task<IActionResult> UpdatePicture(int id, [FromBody] PictureDto pictureDto)
     {
-        var userId = User.FindFirst("UserId").Value;
-        if (id != pictureDto.Id)
+        var userId = _httpContextAccessor.HttpContext.User.FindFirst(i => i.Type == ClaimTypes.NameIdentifier).Value;
+        if (id == 0)
         {
-            return BadRequest("ID in the request body does not match the route.");
+            return BadRequest("ID in the request is null.");
         }
 
         await _pictureService.UpdatePictureAsync(id, pictureDto, userId);
@@ -97,7 +103,7 @@ public class PictureController : ControllerBase
     [Authorize]
     public async Task<IActionResult> DeletePicture(int id)
     {
-        var userId = User.FindFirst("UserId").Value;
+        var userId = _httpContextAccessor.HttpContext.User.FindFirst(i => i.Type == ClaimTypes.NameIdentifier).Value;
         var existingPicture = await _pictureService.GetPictureAsync(id);
         if (existingPicture == null)
         {
