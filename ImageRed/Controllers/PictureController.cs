@@ -58,7 +58,7 @@ public class PictureController : ControllerBase
     [Authorize]
     public async Task<IActionResult> AddPicture([FromForm] PictureDto pictureDto)
     {
-        var userId = _httpContextAccessor.HttpContext.User.FindFirst(i => i.Type == ClaimTypes.NameIdentifier).Value;
+        var currentUserId = _httpContextAccessor.HttpContext.User.FindFirst(i => i.Type == ClaimTypes.NameIdentifier).Value;
         if (pictureDto.ImageFile == null || pictureDto.ImageFile.Length == 0)
         {
             return BadRequest("No file is selected.");
@@ -74,7 +74,7 @@ public class PictureController : ControllerBase
  
         pictureDto.ImageUrl = result.Item2;
 
-        var addedPicture = await _pictureService.AddPictureAsync(pictureDto, userId);
+        var addedPicture = await _pictureService.AddPictureAsync(pictureDto, currentUserId);
 
         return CreatedAtAction(nameof(GetPicture), new { id = addedPicture.Id }, addedPicture);
     }
@@ -86,13 +86,13 @@ public class PictureController : ControllerBase
     [Authorize]
     public async Task<IActionResult> UpdatePicture(int id, [FromBody] PictureDto pictureDto)
     {
-        var userId = _httpContextAccessor.HttpContext.User.FindFirst(i => i.Type == ClaimTypes.NameIdentifier).Value;
+        var currentUserId = _httpContextAccessor.HttpContext.User.FindFirst(i => i.Type == ClaimTypes.NameIdentifier).Value;
         if (id == 0)
         {
             return BadRequest("ID in the request is null.");
         }
 
-        await _pictureService.UpdatePictureAsync(id, pictureDto, userId);
+        await _pictureService.UpdatePictureAsync(id, pictureDto, currentUserId);
         return NoContent();
     }
 
@@ -103,17 +103,16 @@ public class PictureController : ControllerBase
     [Authorize]
     public async Task<IActionResult> DeletePicture(int id)
     {
-        var userId = _httpContextAccessor.HttpContext.User.FindFirst(i => i.Type == ClaimTypes.NameIdentifier).Value;
+        var currentUserId = _httpContextAccessor.HttpContext.User.FindFirst(i => i.Type == ClaimTypes.NameIdentifier).Value;
         var existingPicture = await _pictureService.GetPictureAsync(id);
         if (existingPicture == null)
         {
             return NotFound();
         }
 
-
         if (_fileService.DeleteImage(existingPicture.ImageUrl))
         {
-            await _pictureService.DeletePictureAsync(id, userId);
+            await _pictureService.DeletePictureAsync(id, currentUserId);
             return NoContent();
         }
 

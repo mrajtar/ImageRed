@@ -21,6 +21,8 @@ namespace ImageRed.Domain.Entities
         public string? ImageUrl { get; set; }
         public string? Tag { get; set; } = string.Empty;
         public string UserId { get; set; }
+        public string Author { get; set; } = string.Empty;
+        public bool isPrivate { get; set; }
         public List<Rating> Ratings { get; set; }
         public List<Comment> Comments { get; set; }
         

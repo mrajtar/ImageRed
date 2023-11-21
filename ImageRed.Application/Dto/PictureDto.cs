@@ -15,6 +15,8 @@ namespace ImageRed.Application.Dto
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         public string? Tag { get; set; }
+        public string Author { get; set; } = string.Empty;
+        public bool isPrivate { get; set; }
         [NotMapped]
         public IFormFile? ImageFile { get; set; }
     }
