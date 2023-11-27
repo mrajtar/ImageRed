@@ -61,7 +61,7 @@ namespace ImageRed.Application.Services
             }
             if (picture.isPrivate && !userDetails.IsInRole("Admin") && picture.UserId != currentUserId)
             {
-                throw new HttpResponseException(HttpStatusCode.Forbidden);
+                throw new UnauthorizedAccessException("You do not have permission to access this picture.");
             }
             var pictureDto = MapPictureToPictureDto(picture);
             return pictureDto;
@@ -82,7 +82,7 @@ namespace ImageRed.Application.Services
             var userDetails = _httpContextAccessor.HttpContext.User;
             if (existingPicture == null)
             {
-                return;
+                throw new KeyNotFoundException("No comment found with this id");
             }
 
             if (UserId == existingPicture.UserId || userDetails.IsInRole("Admin"))
@@ -92,7 +92,7 @@ namespace ImageRed.Application.Services
             }
             else
             {
-                throw new HttpResponseException(HttpStatusCode.Forbidden);
+                throw new UnauthorizedAccessException("You do not have permission to edit this picture.");
             }
         }
 
@@ -104,7 +104,7 @@ namespace ImageRed.Application.Services
 
             if (existingPicture == null)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                throw new KeyNotFoundException("No comment found with this id");
             }
 
             if (UserId == existingPicture.UserId || userDetails.IsInRole("Admin"))
@@ -113,7 +113,7 @@ namespace ImageRed.Application.Services
             }
             else
             {
-                throw new HttpResponseException(HttpStatusCode.Forbidden);
+                throw new UnauthorizedAccessException("You do not have permission to delete this picture.");
             }
         }
 

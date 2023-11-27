@@ -62,6 +62,8 @@ builder.Services.AddScoped<IPictureRepository, PictureRepository>();
 builder.Services.AddScoped<IPictureService, PictureService>();
 builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 
 builder.Services.AddHttpContextAccessor();
 

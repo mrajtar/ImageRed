@@ -23,8 +23,6 @@ namespace ImageRed.Domain.Entities
         public string UserId { get; set; }
         public string Author { get; set; } = string.Empty;
         public bool isPrivate { get; set; }
-        public List<Rating> Ratings { get; set; }
-        public List<Comment> Comments { get; set; }
         
         [NotMapped]
         public IFormFile? ImageFile { get; set; }

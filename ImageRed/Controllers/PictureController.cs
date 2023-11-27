@@ -19,15 +19,13 @@ public class PictureController : ControllerBase
 {
     private readonly IPictureService _pictureService;
     private readonly IFileService _fileService;
-    private readonly IPictureRepository _pictureRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-    public PictureController(IPictureService pictureService, IFileService fileService, IPictureRepository pictureRepository, IHttpContextAccessor httpContextAccessor)
+    public PictureController(IPictureService pictureService, IFileService fileService, IHttpContextAccessor httpContextAccessor)
     {
         _pictureService = pictureService;
         _fileService = fileService;
-        _pictureRepository = pictureRepository;
         _httpContextAccessor = httpContextAccessor;
     }
 
