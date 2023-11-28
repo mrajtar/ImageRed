@@ -64,6 +64,8 @@ builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IAlbumRepository,  AlbumRepository>();
+builder.Services.AddScoped<IAlbumService, AlbumService>();
 
 builder.Services.AddHttpContextAccessor();
 

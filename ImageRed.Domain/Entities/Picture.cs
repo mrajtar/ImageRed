@@ -1,13 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace ImageRed.Domain.Entities
 {
@@ -23,6 +16,7 @@ namespace ImageRed.Domain.Entities
         public string UserId { get; set; }
         public string Author { get; set; } = string.Empty;
         public bool isPrivate { get; set; }
+        public int AlbumId { get; set; }
         
         [NotMapped]
         public IFormFile? ImageFile { get; set; }

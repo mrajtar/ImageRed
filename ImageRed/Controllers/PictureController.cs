@@ -31,6 +31,7 @@ public class PictureController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [Authorize]
     public async Task<IActionResult> GetAllPictures()
     {
         var pictureDtos = await _pictureService.GetAllPicturesAsync();

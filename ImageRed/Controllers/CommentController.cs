@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ImageRed.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/comments")]
     [ApiController]
     public class CommentController : ControllerBase
     {
