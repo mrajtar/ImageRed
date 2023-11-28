@@ -1,1 +1,1 @@
-# ImageRed
+A .net web api application for performing CRUD operations on pictures. You can also perform CRUD operations albums and add/delete images to/from these albums. You can't perform operations on pictures and albums that aren't yours unless you are an Admin. Pictures and albums also have privacy settings, that prohibit you from accessing them if you aren't the user who uploaded it or an admin.
