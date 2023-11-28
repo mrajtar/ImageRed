@@ -1,16 +1,18 @@
 A .net web api application for performing CRUD operations on pictures. You can also perform CRUD operations on albums and add/delete images to/from these albums. You can't perform operations on pictures and albums that aren't yours unless you are an Admin. Pictures and albums also have privacy settings, that prohibit you from accessing them if you aren't the user who uploaded it or an admin.
 
 How to run it:
-```http
+```bash
 git clone https://github.com/mrajtar/ImageRed.git
 ```
 Navigate into the directory:
-```http
-cd ImageREd
+```bawsh
+cd ImageRed
 ```
 Build the solution and then run it
-```http
+```bash
 dotnet build
+```
+```bash
 dotnet run
 ```
 ## PICTURES
